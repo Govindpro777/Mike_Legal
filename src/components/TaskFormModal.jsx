@@ -1,32 +1,32 @@
-import { Modal, Input, Select, Form as AntForm } from 'antd';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { addTask, updateTask } from '../store/tasksSlice';
-import dayjs from 'dayjs';
+import { Modal, Input, Select, Form as AntForm } from "antd";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { addTask, updateTask } from "../store/tasksSlice";
+import dayjs from "dayjs";
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 const taskSchema = Yup.object().shape({
   title: Yup.string()
-    .required('Title is required')
-    .min(3, 'Title must be at least 3 characters'),
+    .required("Title is required")
+    .min(3, "Title must be at least 3 characters"),
   description: Yup.string(),
-  date: Yup.string().required('Date is required'),
+  date: Yup.string().required("Date is required"),
   category: Yup.string()
-    .required('Category is required')
-    .oneOf(['success', 'warning', 'error', 'default'], 'Invalid category'),
+    .required("Category is required")
+    .oneOf(["success", "warning", "error", "default"], "Invalid category"),
 });
 
 const TaskFormModal = ({ visible, onClose, initialValues, selectedDate }) => {
   const dispatch = useDispatch();
 
   const defaultValues = initialValues || {
-    title: '',
-    description: '',
-    date: selectedDate || dayjs().format('YYYY-MM-DD'),
-    category: 'default',
+    title: "",
+    description: "",
+    date: selectedDate || dayjs().format("YYYY-MM-DD"),
+    category: "default",
   };
 
   const handleSubmit = (values, { resetForm }) => {
@@ -46,22 +46,29 @@ const TaskFormModal = ({ visible, onClose, initialValues, selectedDate }) => {
       onSubmit={handleSubmit}
       enableReinitialize
     >
-      {({ values, errors, touched, setFieldValue, handleSubmit, resetForm }) => (
+      {({
+        values,
+        errors,
+        touched,
+        setFieldValue,
+        handleSubmit,
+        resetForm,
+      }) => (
         <Modal
-          title={initialValues ? 'Edit Task' : 'Add New Task'}
+          title={initialValues ? "Edit Task" : "Add New Task"}
           open={visible}
           onOk={handleSubmit}
           onCancel={() => {
             resetForm();
             onClose();
           }}
-          okText={initialValues ? 'Update' : 'Add'}
+          okText={initialValues ? "Update" : "Add"}
         >
           <Form className="space-y-4">
             <AntForm.Item
               label="Title"
-              validateStatus={errors.title && touched.title ? 'error' : ''}
-              help={errors.title && touched.title ? errors.title : ''}
+              validateStatus={errors.title && touched.title ? "error" : ""}
+              help={errors.title && touched.title ? errors.title : ""}
               required
             >
               <Field name="title">
@@ -69,7 +76,7 @@ const TaskFormModal = ({ visible, onClose, initialValues, selectedDate }) => {
                   <Input
                     {...field}
                     placeholder="Enter task title"
-                    status={errors.title && touched.title ? 'error' : ''}
+                    status={errors.title && touched.title ? "error" : ""}
                   />
                 )}
               </Field>
@@ -89,8 +96,8 @@ const TaskFormModal = ({ visible, onClose, initialValues, selectedDate }) => {
 
             <AntForm.Item
               label="Date"
-              validateStatus={errors.date && touched.date ? 'error' : ''}
-              help={errors.date && touched.date ? errors.date : ''}
+              validateStatus={errors.date && touched.date ? "error" : ""}
+              help={errors.date && touched.date ? errors.date : ""}
               required
             >
               <Field name="date">
@@ -98,7 +105,7 @@ const TaskFormModal = ({ visible, onClose, initialValues, selectedDate }) => {
                   <Input
                     {...field}
                     type="date"
-                    status={errors.date && touched.date ? 'error' : ''}
+                    status={errors.date && touched.date ? "error" : ""}
                   />
                 )}
               </Field>
@@ -106,15 +113,17 @@ const TaskFormModal = ({ visible, onClose, initialValues, selectedDate }) => {
 
             <AntForm.Item
               label="Category"
-              validateStatus={errors.category && touched.category ? 'error' : ''}
-              help={errors.category && touched.category ? errors.category : ''}
+              validateStatus={
+                errors.category && touched.category ? "error" : ""
+              }
+              help={errors.category && touched.category ? errors.category : ""}
               required
             >
               <Select
                 value={values.category}
-                onChange={(value) => setFieldValue('category', value)}
+                onChange={(value) => setFieldValue("category", value)}
                 placeholder="Select category"
-                status={errors.category && touched.category ? 'error' : ''}
+                status={errors.category && touched.category ? "error" : ""}
               >
                 <Option value="success">Success</Option>
                 <Option value="warning">Warning</Option>
@@ -130,6 +139,3 @@ const TaskFormModal = ({ visible, onClose, initialValues, selectedDate }) => {
 };
 
 export default TaskFormModal;
-
-
-
